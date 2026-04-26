@@ -276,7 +276,7 @@ namespace mglm{
     template<typename MatType>
     inline MatType diagonal(float s) { return MatType(s); }
 
-    // 外积 (Outer Product): result = a * b^T (矩阵)
+    // 外积 (Outer Product): result = a * b^T(矩阵)
     inline mat5 outerProduct(const vec5& a, const vec5& b) {
         mat5 m;
         for (int col = 0; col < 5; ++col)
@@ -301,7 +301,6 @@ namespace mglm{
         mat5 inv;
         for (int col = 0; col < 5; ++col) {
             for (int row = 0; row < 5; ++row) {
-                //得到4x4余子式矩阵
                 mat4 subMatrix(m, col, row);
                 float minor = determinant(subMatrix);
                 //加上代数余子式的符号:(-1)^(col+row)
