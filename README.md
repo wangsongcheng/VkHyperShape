@@ -5,9 +5,9 @@
 VkHyperShape 专注于解决**四维空间到三维空间的投影与渲染**问题。
 它通过自定义的 4D 数学库与 Vulkan 高性能渲染管线，将抽象的高维几何结构直观地呈现在屏幕上。
 
-![1](https://github.com/wangsongcheng/VkHyperShape/screenshot/1.png)
-![2](https://github.com/wangsongcheng/VkHyperShape/screenshot/2.png)
-![3](https://github.com/wangsongcheng/VkHyperShape/screenshot/3.png)
+![screenshot](screenshot/1.png)
+![screenshot](screenshot/2.png)
+![screenshot](screenshot/3.png)
 
 ---
 

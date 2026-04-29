@@ -69,7 +69,6 @@ namespace mglm{
         
         vec4 w1;
         const mat4 basis = mat4(1.0f);
-        
         for (int i = 0; i < 4; ++i) {
             vec4 candidate = basis[i];
             vec4 proj = dot(candidate, u) * u + dot(candidate, v) * v;
@@ -99,13 +98,13 @@ namespace mglm{
                 w1 = normalize(w1);
                 vec4 w2 = cross(u, v, w1);
                 w2 = normalize(w2);
-                return Plane(abs(w1), abs(w2));
+                return Plane(w1, w2);
             }
         }
         w1 = vec4(0, 0, 1, 0);
         vec4 w2 = cross(u, v, w1);
         w2 = normalize(w2);
-        return Plane(abs(w1), abs(w2));
+        return Plane(w1, w2);
     }
     inline mat5 rotate(float angle, const Plane& plane) {
         Plane p = plane.orthonormalize();

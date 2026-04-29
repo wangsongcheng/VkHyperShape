@@ -13,9 +13,9 @@
 #ifdef DEBUG
 #include "geometry/test.h"
 #endif
+#include "geometry/font.h"
 #include "geometry/grid.h"
 #include "geometry/clifford.h"
-#include "geometry/cylinder.h"
 #include "geometry/tesseract.h"
 #include "geometry/pentatope.h"
 #include "geometry/cylindrical.h"
@@ -42,6 +42,7 @@ struct ImGuiInput{
     bool grid4d;
     bool grid3d;
     bool fill = true;
+    bool font = false;
     bool ortho = false;
     bool clifford = false;
     bool cylinder = false;
@@ -58,6 +59,7 @@ struct ImGuiInput{
     bool testGeometry = false;
 #endif
     void UnSelect(){
+        font = false;
         ortho = false;
         grid4d = false;
         grid3d = false;
@@ -66,14 +68,11 @@ struct ImGuiInput{
         tesseract = false;
         pentatope = false;
         cylindrical = false;
-        kleinBottle = false;
         sixteenCell = false;
+        kleinBottle = false;
         hypersphere = false;
         twentyFourCell = false;
-        UpdateGeometry = false;
-#ifdef DEBUG
-        testGeometry = false;
-#endif
+        // memset(this, 0, sizeof(ImGuiInput));
     }
 #ifdef DEBUG
     void SeletctTestGeometry(){
@@ -138,6 +137,11 @@ struct ImGuiInput{
         UnSelect();
         hypersphere = true;
         UpdateGeometry = true;        
+    }
+    void SelectFont(){
+        UnSelect();
+        font = true;
+        UpdateGeometry = true;
     }
 };
 struct PushConstant{
@@ -244,7 +248,7 @@ void UpdateUniform(const vulkan::Device&device){
 }
 void ShowGeometry(){
     ImGui::SeparatorText("几何");
-    const std::array currentItems = { "超立方体", "超圆柱", "超球", "贝塞尔管道", "正五胞体", "正十六胞体", "正二十四胞体", "Clifford环面", "克莱因瓶", "三维网格", "四维网格",
+    const std::array currentItems = { "超立方体", "超圆柱", "超球", "贝塞尔管道", "四维字", "正五胞体", "正十六胞体", "正二十四胞体", "Clifford环面", "克莱因瓶", "三维网格", "四维网格",
 #ifdef DEBUG
         "图元测试"
 #endif
@@ -278,6 +282,9 @@ void ShowGeometry(){
                 }
                 else if(geometry == "超圆柱"){
                     g_ImGuiInput.SelectCylindrical();
+                }
+                else if(geometry == "四维字"){
+                    g_ImGuiInput.SelectFont();
                 }
                 else if(geometry == "贝塞尔管道"){
                     g_ImGuiInput.SelectCylinder();
@@ -362,7 +369,7 @@ void UpdateImGui(VkCommandBuffer command){
         }
         ShowRotate();
         ShowGeometry();
-        if(g_ImGuiInput.cylinder){
+        if(g_ImGuiInput.cylinder || g_ImGuiInput.font){
             if(ImGui::InputFloat("半径", &g_ImGuiInput.parameter.radius)){
                 g_Geometry->Update(&g_ImGuiInput.parameter);
             }
@@ -651,6 +658,9 @@ void display(GLFWwindow* window){
         }
         else if(g_ImGuiInput.clifford){
             g_Geometry = new Clifford;
+        }
+        else if(g_ImGuiInput.font){
+            g_Geometry = new Font;
         }
         else if(g_ImGuiInput.cylinder){
             g_Geometry = new Cylinder;
